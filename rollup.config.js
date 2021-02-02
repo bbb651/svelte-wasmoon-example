@@ -6,6 +6,8 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import ignore from "rollup-plugin-ignore";
+import url from '@rollup/plugin-url';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -39,6 +41,12 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		ignore(["path", "fs", "child_process", "crypto", "url"]),
+		url({
+			fileName: '[dirname][hash][extname]',
+			include: ['**/*.wasm'],
+			publicPath: 'build/'
+		}),
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
