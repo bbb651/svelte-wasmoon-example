@@ -1,5 +1,6 @@
 import App from './App.svelte';
 import { LuaFactory } from 'wasmoon';
+import wasmFile from 'wasmoon/dist/glue.wasm';
 
 const app = new App({
 	target: document.body,
@@ -10,7 +11,7 @@ const app = new App({
 
 (async () => {
 	
-	const lua = await new LuaFactory("test").createEngine();
+	const lua = await new LuaFactory(wasmFile).createEngine();
 
 	try {
 		lua.global.set('sum', (x, y) => x + y);
